@@ -1,27 +1,25 @@
 # This file describes an application. You can have multiple applications
 # in the same project.
 #
-# See https://docs.platform.sh/user_guide/reference/platform-app-yaml.html
+# See https://docs.platform.sh/configuration/app.html
 
 # The name of this app. Must be unique within a project.
-name: strapi
+name: app
 
-# The runtime the application uses.
+# The runtime the application uses. Strapi not yet suppported with NodeJS 14.
 type: nodejs:14
 
-dependencies:
-  nodejs:
-    yarn: "1.19.2"
+# Use Yarn instead of npm.
+build:
+  flavor: none
 
-# The hooks that will be triggered when the package is deployed.
+# The hooks executed at various points in the lifecycle of the application.
 hooks:
-    # Build hooks can modify the application files on disk but not access any services like databases.
-    build: !include
-      type: string
-      path: build.sh
+  build: |
+    npm install
+    npm run build
 
 # The relationships of the application with services or other applications.
-#
 # The left-hand side is the name of the relationship as it will be exposed
 # to the application in the PLATFORM_RELATIONSHIPS variable. The right-hand
 # side is in the form `<service name>:<endpoint name>`.
@@ -30,28 +28,40 @@ relationships:
 
 # The configuration of app when it is exposed to the web.
 web:
+  locations:
+    # For serving the generated OpenAPI specification as part of the documentation.
+    "/docs/spec":
+      root: "extensions/documentation/documentation/1.0.0"
+      allow: true
+      scripts: false
+      index:
+        - full_documentation.json
   commands:
-    start: ./start.sh
+    start: |
+      # Production start on all environments
+      NODE_ENV=production npm run develop
 
 # The size of the persistent disk of the application (in MB).
 disk: 1024
 
+# The 'mounts' describe writable, persistent filesystem mounts in the application.
 mounts:
-    '/.tmp':
-        source: local
-        source_path: tmp
-    '/.cache':
-        source: local
-        source_path: cache
-    'api':
-        source: local
-        source_path: api
-    'components':
-        source: local
-        source_path: components
-    'public/uploads':
-        source: local
-        source_path: uploads
-    'extensions':
-        source: local
-        source_path: extensions
+  # Strapi's cache directory.
+  "/.cache":
+    source: local
+    source_path: cache
+
+  # Mount .tmp file in the app folder for strapi
+  ".tmp":
+    source: local
+    source_path: app
+
+  # Give write access for extension configuration JSONs.
+  "extensions":
+    source: local
+    source_path: extensions
+
+  # Allow for media uploads at runtime.
+  "public/uploads":
+    source: local
+    source_path: uploads
