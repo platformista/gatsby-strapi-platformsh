@@ -2,7 +2,8 @@
   "kind": "collectionType",
   "collectionName": "articles",
   "info": {
-    "name": "Article"
+    "name": "Article",
+    "description": ""
   },
   "options": {
     "increments": true,
@@ -28,6 +29,10 @@
       "plugin": "upload",
       "required": true,
       "pluginOptions": {}
+    },
+    "category": {
+      "model": "category",
+      "via": "articles"
     }
   }
 }

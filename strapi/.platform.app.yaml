@@ -39,7 +39,7 @@ web:
   commands:
     start: |
       # Production start on all environments
-      NODE_ENV=production npm run develop
+      NODE_ENV=production npm start
 
 # The size of the persistent disk of the application (in MB).
 disk: 1024
