@@ -14,7 +14,7 @@ const Card = ({ article }) => {
         </div>
         <div className="uk-card-body">
           <p id="category" className="uk-text-uppercase">
-            {article.node.category.name}
+            {article.node.category?.name}
           </p>
           <p id="title" className="uk-text-large">
             {article.node.title}
@@ -25,4 +25,4 @@ const Card = ({ article }) => {
   )
 }
 
-export default Card  
+export default Card
