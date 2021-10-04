@@ -38,7 +38,7 @@ Next, you need to adjust `Public` permissions. You can do that by going to `<bac
 Adjust the permissions for the two collections:
 
 - `Category`: select `find` and `findone`
- - `Article`: select `find` and `findone`
+- `Article`: select `find` and `findone`
 
 Save your changes.
 
