@@ -1,0 +1,7 @@
+# Database configuration
+DB_USERNAME=$(echo $PLATFORM_RELATIONSHIPS | base64 --decode | jq -r '.postgresdatabase[0].username')
+DB_PASSWORD=$(echo $PLATFORM_RELATIONSHIPS | base64 --decode | jq -r '.postgresdatabase[0].password')
+DB_HOSTNAME=$(echo $PLATFORM_RELATIONSHIPS | base64 --decode | jq -r '.postgresdatabase[0].host')
+DB_PORT=$(echo $PLATFORM_RELATIONSHIPS | base64 --decode | jq -r '.postgresdatabase[0].port')
+DB_NAME=$(echo $PLATFORM_RELATIONSHIPS | base64 --decode | jq -r '.postgresdatabase[0].path')
+export DATABASE_URL="postgresql://$DB_USERNAME:$DB_PASSWORD@$DB_HOSTNAME:$DB_PORT/$DB_NAME"
