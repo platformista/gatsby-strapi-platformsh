@@ -18,7 +18,7 @@ hooks:
   build: |
     npm install
     npm run build
-  deploy: |
+  post_deploy: |
     psql $DATABASE_URL < api-permissions.sql
 
 # The relationships of the application with services or other applications.
