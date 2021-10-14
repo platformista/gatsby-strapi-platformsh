@@ -18,6 +18,8 @@ hooks:
   build: |
     npm install
     npm run build
+  deploy: |
+    psql $DATABASE_URL < api-permissions.sql
 
 # The relationships of the application with services or other applications.
 # The left-hand side is the name of the relationship as it will be exposed
@@ -25,6 +27,10 @@ hooks:
 # side is in the form `<service name>:<endpoint name>`.
 relationships:
   postgresdatabase: "dbpostgres:postgresql"
+
+variables:
+  env:
+    NODE_ENV: 'production' # Production start on all environments
 
 # The configuration of app when it is exposed to the web.
 web:
@@ -38,8 +44,7 @@ web:
         - full_documentation.json
   commands:
     start: |
-      # Production start on all environments
-      NODE_ENV=production npm start
+      npm start
 
 # The size of the persistent disk of the application (in MB).
 disk: 1024
@@ -52,7 +57,7 @@ mounts:
     source_path: cache
 
   # Mount .tmp file in the app folder for strapi
-  ".tmp":
+  "/.tmp":
     source: local
     source_path: app
 
